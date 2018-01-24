@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>nicktgr15</title><link href="https://nicktgr15.github.io/" rel="alternate"></link><link href="https://nicktgr15.github.io/feeds/all.atom.xml" rel="self"></link><id>https://nicktgr15.github.io/</id><updated>2018-01-21T10:20:00+00:00</updated><entry><title>Building and benchmarking my own Deep-Learning server</title><link href="https://nicktgr15.github.io/building-and-benchmarking-my-own-deep-learning-server.html" rel="alternate"></link><published>2018-01-21T10:20:00+00:00</published><updated>2018-01-21T10:20:00+00:00</updated><author><name>nicktgr15</name></author><id>tag:nicktgr15.github.io,2018-01-21:/building-and-benchmarking-my-own-deep-learning-server.html</id><summary type="html">&lt;p&gt;During the last 18 months I spent a lot of time reading about Deep Learning and experimenting in various problem
+spaces where these techniques can be applied. As a big fan of cloud computing I relied mainly on AWS and their
+&lt;code&gt;p2.xlarge&lt;/code&gt; spot instances to run my Deep Learning …&lt;/p&gt;</summary><content type="html">&lt;p&gt;During the last 18 months I spent a lot of time reading about Deep Learning and experimenting in various problem
+spaces where these techniques can be applied. As a big fan of cloud computing I relied mainly on AWS and their
+&lt;code&gt;p2.xlarge&lt;/code&gt; spot instances to run my Deep Learning experiments. I automated almost everything using cloudformation and
+I could have my GPU/Compute instance up and running in a couple of minutes. More recently and as the cryptocurrency madness
+was taking off I realised that I had to increase my spot instance bidding price almost on a daily basis.&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:80%;margin:auto;display:block;" src="images/bitcoin-vs-aws.png"/&gt;&lt;/p&gt;
+&lt;p&gt;I checked the spot instance pricing charts on AWS and realised that there was huge fluctuation of the prices.
+I'm not sure it's definitely the case but there might be some correlation between the current value of Bitcoin
+and the AWS EC2 spot instance prices. I would expect Amazon to aim for a spot price that makes
+p2/p3 instances not profitable for miners otherwise it would be very difficult to make resources available for other,
+more meaningful, purposes like AI and other kinds of problem solving.&lt;/p&gt;
+&lt;blockquote class="blockquote"&gt;
+I would expect Amazon to aim for a spot price that makes p2/p3 instances not profitable for miners
+&lt;/blockquote&gt;
+
+&lt;p&gt;Furthermore, the &lt;code&gt;p2.xlarge&lt;/code&gt; I was using, was employing a Tesla K80 GPU which is based on the previous generation Kepler architecture.
+After checking a few benchmarks online it was clear that a Pascal architecture GPU with a similar amount of cores and memory
+would be probably faster.&lt;/p&gt;
+&lt;h3&gt;The Server&lt;/h3&gt;
+&lt;p&gt;Long story short, the system consists of the following components:&lt;/p&gt;
+&lt;table class="table table-striped"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Component&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;Price (GBP) &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Motherboard&lt;/td&gt;&lt;td&gt;GIGABYTE GA-B250M-DS3H&lt;/td&gt;&lt;td&gt;58.85&lt;/td&gt;
+&lt;tr&gt;&lt;td&gt;CPU&lt;/td&gt;&lt;td&gt;Intel G4600&lt;/td&gt;&lt;td&gt;59.99&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;RAM&lt;/td&gt;&lt;td&gt;1 x Ballistix Sport LT 8GB &lt;/td&gt;&lt;td&gt;82.23&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PSU&lt;/td&gt;&lt;td&gt;EVGA 600 W1&lt;/td&gt;&lt;td&gt;43.21&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Storage&lt;/td&gt;&lt;td&gt;Samsung 850 EVO 250 SSD&lt;/td&gt;&lt;td&gt;82.87&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;GPU&lt;/td&gt;&lt;td&gt;Palit GeForce GTX 1070 Ti JetStream 8GB GDDR5&lt;/td&gt;&lt;td&gt;463.97&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Case&lt;/td&gt;&lt;td&gt;Aerocool QS240 M-ATX&lt;/td&gt;&lt;td&gt;29.99&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;821.11&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The plan was to use a recent platform (Kaby Lake) in order to be as power efficient as possible and have the ability to upgrade
+components in the future. It was quite difficult to find a GTX 1070 ti in stock online, for the record, http://amazon.co.uk didn't have
+any available.&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:70%;margin:auto;display:block;" src="images/pc.png"/&gt;&lt;/p&gt;
+&lt;p&gt;Taking into account the current price of &lt;code&gt;p2.xlarge&lt;/code&gt; spot instance on AWS ($0.38 USD/0.27 GBP per hour) with the money
+spent to build my server I could buy &lt;code&gt;127&lt;/code&gt; days of usage while with the standard price (0.70 GBP per hour) that number would be &lt;code&gt;49&lt;/code&gt; days.&lt;/p&gt;
+&lt;h5&gt;Power Consumption / Temperatures&lt;/h5&gt;
+&lt;p&gt;The power consumption of the server was tested using a power meter and the results are as follows:&lt;/p&gt;
+&lt;table class="table table-striped"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Idle (W)&lt;/th&gt;
+&lt;th&gt;Peak Load (W)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;27&lt;/td&gt;&lt;td&gt;180&lt;/td&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The GPU temperature under load was &lt;code&gt;66&lt;/code&gt; degrees Celsius while the CPU never exceeded &lt;code&gt;50&lt;/code&gt; degrees with the stock cooler.
+I was impressed by how small and thin CPU stock coolers are nowadays.&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:30%;margin:auto;display:block;" src="images/stock-g4600.png"/&gt;&lt;/p&gt;
+&lt;blockquote class="blockquote"&gt;
+I was impressed by how small and thin CPU stock coolers are nowadays.
+&lt;/blockquote&gt;
+
+&lt;h3&gt;GTX 1070 Ti vs Tesla K80&lt;/h3&gt;
+&lt;p&gt;In order to compare the performance of the &lt;code&gt;GTX 1070 ti&lt;/code&gt; with the &lt;code&gt;Tesla K80&lt;/code&gt; used in the &lt;code&gt;p2.xlarge&lt;/code&gt; EC2 instance I executed
+the same experiment/benchmark on both systems. The experiment was the following:
+&lt;ul&gt;
+&lt;li&gt; A siamese LSTM deep neural network identifying similar or disimillar speakers (binary classification) &lt;/li&gt;
+&lt;li&gt; Keras was used for the network definition while Tensorflow was employed as the backend &lt;/li&gt;
+&lt;li&gt; 1000 speakers from the Voxceleb dataset were used for training and testing purposes &lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;The execution time was captured using the &lt;code&gt;time&lt;/code&gt; command.&lt;/p&gt;
+&lt;h5&gt;GTX 1070 Ti&lt;/h5&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Train on 300000 samples, validate on 120000 samples
+Epoch 1/20
+2018-01-17 14:09:02.298955: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2
+2018-01-17 14:09:02.483330: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:892] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-01-17 14:09:02.487780: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1030] Found device 0 with properties:
+name: GeForce GTX 1070 Ti major: 6 minor: 1 memoryClockRate(GHz): 1.683
+pciBusID: 0000:01:00.0
+totalMemory: 7.92GiB freeMemory: 7.74GiB
+2018-01-17 14:09:02.488319: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -&amp;gt; (device: 0, name: GeForce GTX 1070 Ti, pci bus id: 0000:01:00.0, compute capability: 6.1)
+ - 58s - loss: 0.2104 - accuracy: 0.6624 - val_loss: 0.1836 - val_accuracy: 0.7135
+Epoch 2/20
+ - 54s - loss: 0.1816 - accuracy: 0.7207 - val_loss: 0.1719 - val_accuracy: 0.7361
+Epoch 3/20
+ - 54s - loss: 0.1700 - accuracy: 0.7467 - val_loss: 0.1673 - val_accuracy: 0.7468
+Epoch 4/20
+ - 54s - loss: 0.1620 - accuracy: 0.7614 - val_loss: 0.1658 - val_accuracy: 0.7486
+Epoch 5/20
+ - 54s - loss: 0.1561 - accuracy: 0.7735 - val_loss: 0.1646 - val_accuracy: 0.7515
+Epoch 6/20
+ - 54s - loss: 0.1509 - accuracy: 0.7832 - val_loss: 0.1657 - val_accuracy: 0.7497
+Epoch 7/20
+ - 54s - loss: 0.1462 - accuracy: 0.7921 - val_loss: 0.1662 - val_accuracy: 0.7494
+Epoch 8/20
+ - 54s - loss: 0.1422 - accuracy: 0.8002 - val_loss: 0.1673 - val_accuracy: 0.7494
+Epoch 9/20
+ - 54s - loss: 0.1387 - accuracy: 0.8065 - val_loss: 0.1681 - val_accuracy: 0.7480
+Epoch 10/20
+ - 54s - loss: 0.1353 - accuracy: 0.8138 - val_loss: 0.1691 - val_accuracy: 0.7475
+Epoch 11/20
+ - 54s - loss: 0.1326 - accuracy: 0.8186 - val_loss: 0.1722 - val_accuracy: 0.7439
+Epoch 12/20
+ - 54s - loss: 0.1297 - accuracy: 0.8249 - val_loss: 0.1732 - val_accuracy: 0.7411
+Epoch 13/20
+ - 54s - loss: 0.1273 - accuracy: 0.8292 - val_loss: 0.1778 - val_accuracy: 0.7390
+Epoch 14/20
+ - 54s - loss: 0.1251 - accuracy: 0.8332 - val_loss: 0.1798 - val_accuracy: 0.7371
+Epoch 15/20
+ - 54s - loss: 0.1227 - accuracy: 0.8379 - val_loss: 0.1819 - val_accuracy: 0.7347
+Epoch 16/20
+ - 54s - loss: 0.1206 - accuracy: 0.8412 - val_loss: 0.1824 - val_accuracy: 0.7340
+Epoch 17/20
+ - 54s - loss: 0.1182 - accuracy: 0.8457 - val_loss: 0.1854 - val_accuracy: 0.7322
+Epoch 18/20
+ - 54s - loss: 0.1164 - accuracy: 0.8489 - val_loss: 0.1880 - val_accuracy: 0.7310
+Epoch 19/20
+ - 54s - loss: 0.1148 - accuracy: 0.8510 - val_loss: 0.1893 - val_accuracy: 0.7285
+Epoch 20/20
+ - 54s - loss: 0.1127 - accuracy: 0.8548 - val_loss: 0.1916 - val_accuracy: 0.7264
+0.710386092868
+
+real    23m2.315s
+user    25m49.500s
+sys 8m24.313s
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h5&gt;Tesla K80 (p2.xlarge)&lt;/h5&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Train on 300000 samples, validate on 120000 samples
+Epoch 1/20
+2018-01-17 14:42:33.663872: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2018-01-17 14:42:36.325831: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:892] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-01-17 14:42:36.326197: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1030] Found device 0 with properties:
+name: Tesla K80 major: 3 minor: 7 memoryClockRate(GHz): 0.8235
+pciBusID: 0000:00:1e.0
+totalMemory: 11.17GiB freeMemory: 11.10GiB
+2018-01-17 14:42:36.326225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -&amp;gt; (device: 0, name: Tesla K80, pci bus id: 0000:00:1e.0, compute capability: 3.7)
+^[[D - 178s - loss: 0.2113 - accuracy: 0.6593 - val_loss: 0.1838 - val_accuracy: 0.7106
+Epoch 2/20
+ - 98s - loss: 0.1800 - accuracy: 0.7245 - val_loss: 0.1719 - val_accuracy: 0.7319
+Epoch 3/20
+ - 98s - loss: 0.1684 - accuracy: 0.7473 - val_loss: 0.1681 - val_accuracy: 0.7414
+Epoch 4/20
+ - 98s - loss: 0.1615 - accuracy: 0.7600 - val_loss: 0.1655 - val_accuracy: 0.7465
+Epoch 5/20
+ - 98s - loss: 0.1559 - accuracy: 0.7703 - val_loss: 0.1673 - val_accuracy: 0.7420
+Epoch 6/20
+ - 99s - loss: 0.1507 - accuracy: 0.7814 - val_loss: 0.1651 - val_accuracy: 0.7473
+Epoch 7/20
+ - 99s - loss: 0.1468 - accuracy: 0.7882 - val_loss: 0.1651 - val_accuracy: 0.7493
+Epoch 8/20
+ - 99s - loss: 0.1432 - accuracy: 0.7949 - val_loss: 0.1671 - val_accuracy: 0.7469
+Epoch 9/20
+ - 98s - loss: 0.1399 - accuracy: 0.8020 - val_loss: 0.1685 - val_accuracy: 0.7466
+Epoch 10/20
+ - 99s - loss: 0.1365 - accuracy: 0.8089 - val_loss: 0.1701 - val_accuracy: 0.7465
+Epoch 11/20
+ - 99s - loss: 0.1343 - accuracy: 0.8139 - val_loss: 0.1682 - val_accuracy: 0.7486
+Epoch 12/20
+ - 99s - loss: 0.1317 - accuracy: 0.8191 - val_loss: 0.1699 - val_accuracy: 0.7480
+Epoch 13/20
+ - 99s - loss: 0.1299 - accuracy: 0.8229 - val_loss: 0.1738 - val_accuracy: 0.7439
+Epoch 14/20
+ - 98s - loss: 0.1272 - accuracy: 0.8285 - val_loss: 0.1732 - val_accuracy: 0.7439
+Epoch 15/20
+ - 99s - loss: 0.1254 - accuracy: 0.8320 - val_loss: 0.1752 - val_accuracy: 0.7426
+Epoch 16/20
+ - 99s - loss: 0.1237 - accuracy: 0.8353 - val_loss: 0.1800 - val_accuracy: 0.7403
+Epoch 17/20
+ - 99s - loss: 0.1219 - accuracy: 0.8389 - val_loss: 0.1782 - val_accuracy: 0.7386
+Epoch 18/20
+ - 99s - loss: 0.1205 - accuracy: 0.8422 - val_loss: 0.1810 - val_accuracy: 0.7389
+Epoch 19/20
+ - 99s - loss: 0.1184 - accuracy: 0.8449 - val_loss: 0.1866 - val_accuracy: 0.7359
+Epoch 20/20
+ - 99s - loss: 0.1170 - accuracy: 0.8477 - val_loss: 0.1842 - val_accuracy: 0.7335
+0.723093976237
+
+real    43m15.608s
+user    37m35.408s
+sys 17m48.836s
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;GTX 1070 Ti&lt;/code&gt; was almost two times faster completing the test in &lt;code&gt;23m 2.315s&lt;/code&gt; as opposed to the &lt;code&gt;p2.xlarge&lt;/code&gt; instance
+which required &lt;code&gt;43m 15.608s&lt;/code&gt;.&lt;/p&gt;</content><category term="tensorflow"></category><category term="aws"></category><category term="cuda"></category><category term="convnets"></category><category term="convolutional neural networks"></category><category term="machine learning"></category><category term="python"></category><category term="keras"></category></entry><entry><title>Analysing 100GB of aerial photos to identify Sea Lions using tensorflow and spark on AWS</title><link href="https://nicktgr15.github.io/analysing-100gb-of-aerial-photos-to-identify-sea-lions-using-tensorflow-and-spark-on-aws.html" rel="alternate"></link><published>2017-06-12T10:20:00+01:00</published><updated>2017-06-12T10:20:00+01:00</updated><author><name>nicktgr15</name></author><id>tag:nicktgr15.github.io,2017-06-12:/analysing-100gb-of-aerial-photos-to-identify-sea-lions-using-tensorflow-and-spark-on-aws.html</id><summary type="html">&lt;p&gt;With this post I will attempt to describe the approach I followed in order to analyze 100GB of image data for the purpose of identifying sea lions in aerial photos as part of &lt;a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count"&gt;this&lt;/a&gt; kaggle competition. The reason why I found this competition an interesting challenge was threefold: was for …&lt;/p&gt;</summary><content type="html">&lt;p&gt;With this post I will attempt to describe the approach I followed in order to analyze 100GB of image data for the purpose of identifying sea lions in aerial photos as part of &lt;a href="https://www.kaggle.com/c/noaa-fisheries-steller-sea-lion-population-count"&gt;this&lt;/a&gt; kaggle competition. The reason why I found this competition an interesting challenge was threefold: was for a good cause, was a good opportunity to apply recently acquired knowledge about convnets/tensorflow and finally, was a nice example of using spark as a parallel processing engine to speed up single-threaded applications. &lt;/p&gt;
+&lt;h2&gt;The competition&lt;/h2&gt;
+&lt;p&gt;If you are not familiar with kaggle competitions, most of the time they follow the same pattern which involves a dataset, provided to the contestants, and a submission format, usually in csv, which must be used as a template to submit results back to kaggle. Kaggle has the corresponding ground truth data for the submissions of the contestants and based on a predefined metric function a result is calculated. In this case, the above were as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Dataset&lt;/strong&gt;&lt;br&gt;
+The dataset consists of 18636 images used as test data and 949 images used as training data. In the case of training data, a second, annotated version of those 949 images is provided, in which each sea lion is annotated using a colored dot. The size of the provided dataset in bytes is close to 100GB, with 86GB comprising the test data and around 10GB the training data.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Submission format&lt;/strong&gt;&lt;br&gt;
+The classification results are submitted using the following csv format. The &lt;code&gt;test_id&lt;/code&gt; represents the test image from which the corresponding counts for each type of sea lion have been calculated. It's obvious that during the evaluation the only processing that takes place in kaggle is the comparison of the submitted results with the ground truth i.e. validation is quick.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;test_id,adult_males,subadult_males,adult_females,juveniles,pups
+0,1,1,1,1,1
+1,1,1,1,1,1
+2,1,1,1,1,1
+etc
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Evaluation metric&lt;/strong&gt;&lt;br&gt;
+The submitted results are evaluated using the Root Mean Square Error (RMSE) metric, averaged over the available columns (i.e. for the different types of sea lions)&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(RMSE_{avg} = \frac{1}{5}(\sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{adult-males} - \hat{y}_{adult-males})^2} + ... + \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_{pups} - \hat{y}_{pups})^2})\)&lt;/span&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Matching the Dots&lt;/h2&gt;
+&lt;p&gt;Or to be more accurate: finding and counting the dots. The training dataset images come in two versions, a plain image and a dotted image. On the dotted image each dot represents the location of a sea lion, while its colour indicates the corresponding sea lion type/class. As already mentioned, there are 5 types/classes of sea lions in the training data &lt;code&gt;adult_males, subadult_males, adult_females, juveniles, pups&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:100%;margin:auto;display:block;" src="images/blob_detection.png"/&gt;&lt;/p&gt;
+&lt;p&gt;In the above figure three different versions of an example training image are presented. On the left side, the dotted version, in the middle, the absolute difference between the dotted and non-dotted images and finally, on the right side, the 64x64 pixels bounding boxes indicating the actual regions of the image that will be used as training samples for each class. The Laplacian of Gaussian blob detection algorithm is used to get the locations of the dots appearing on the middle image and when those locations are retrieved the type/colour of the corresponding sea lion is extracted from the original dotted training image. &lt;/p&gt;
+&lt;p&gt;This whole, devious procedure is required because of the way the training data were provided by the competition organisers (i.e. as part of the image) so the coordinates and class information need to be extracted through some kind of post-processing. For each training image a dictionary like the following is generated.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;{
+    &amp;quot;sea-lions&amp;quot;: {
+        &amp;quot;adult_males&amp;quot;: [
+                [dot_x, dot_y],
+                ...
+        ],
+        &amp;quot;subadult_males&amp;quot;: [ ... ],
+        &amp;quot;adult_females&amp;quot;: [ ... ],
+        &amp;quot;juveniles&amp;quot;: [ ... ],
+        &amp;quot;pups&amp;quot;: [ ... ],
+    },
+    &amp;quot;filename&amp;quot;: image_filename
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Spark sparks creative (and a bit unorthodox) thinking&lt;/h2&gt;
+&lt;p&gt;To speedup the above procedure, which was underutilising the multiple cores available on my macbook, an attempt to parallelise it using spark was made. Spark is quite straightforward to run locally in standalone mode, and will by default utilise all available cpu resources. As long as Java is installed, the binaries can be downloaded from &lt;a href="https://spark.apache.org/downloads.html"&gt;https://spark.apache.org/downloads.html&lt;/a&gt; and after extracting the contents of the archive a spark job can be executed as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./spark-2.1.1-bin-hadoop2.7/bin/spark-submit my_pyspark_job.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;With this spark job we wanted to achieve the following:  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;From each training image extract metadata with the coordinates of the sea lions &lt;/li&gt;
+&lt;li&gt;From each training image generate 64x64 thumbnails centered on the coordinates extracted in the previous step  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let's go through the actual code.&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pyspark.sql.functions&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pyspark.sql.types&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pyspark&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SparkConf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SparkContext&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;util&lt;/span&gt;
+
+&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SparkConf&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setAppName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Kaggle-Sea-Lions&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;sc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SparkContext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setLogLevel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ERROR&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;filepaths&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_training_data_file_paths&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dataset_path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;../dataset&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# extract training metadata &lt;/span&gt;
+&lt;span class="n"&gt;metadata&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parallelize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filepaths&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extract_training_data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;collect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;training_metadata.json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;wb&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# create thumbnails for every sea lion in the training data&lt;/span&gt;
+&lt;span class="n"&gt;sc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parallelize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extract_training_images&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;collect&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;lines 7-9&lt;/strong&gt;: Spark job initialisation and metadata&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;line 11&lt;/strong&gt;: &lt;code&gt;filepaths&lt;/code&gt; contains the absolute locations of the training images after some filtering to remove a subset of images flagged as inappropriate for training by the organisers&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;line 14&lt;/strong&gt;: This is an example of a Resilient Distributed Dataset (RDD) in spark. The &lt;code&gt;parallelize&lt;/code&gt; function receives as input a list containing the available training images and using the &lt;code&gt;map&lt;/code&gt; function applies the metadata extraction function &lt;code&gt;util.extract_training_data(training_image)&lt;/code&gt; to each one of them. In spark terminology, &lt;code&gt;parallelize&lt;/code&gt; and &lt;code&gt;map&lt;/code&gt; are considered "transformations" and as such no processing is triggered by them. The processing is triggered using an "action", which in this case is the &lt;code&gt;.collect()&lt;/code&gt; call which fetches the entire RDD to the driver. The RDD returned is a list with the metadata dictionaries described earlier.
+The following screenshot from the spark ui shows that only one executor is created when running locally in standalone mode and that executor is able to execute 8 tasks in parallel which in this case is equal to the  4 cores x 2 threads of an intel i7 cpu.
+&lt;img style="width:100%;margin:auto;" src="images/executor.png"/&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;lines 16-17&lt;/strong&gt;: Metadata written on disk in json form&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;line 20&lt;/strong&gt;: Another RDD is formed here, this time &lt;code&gt;results&lt;/code&gt; contains the list of dicts created earlier while the map function &lt;code&gt;util.extract_training_images(image_metadata)&lt;/code&gt; receives as input one of those dicts. The map function generates 64x64 thumbnails centered on the dots detected in the previous step which are written on disk using the following template &lt;code&gt;img_&amp;lt;image-filename&amp;gt;-&amp;lt;class&amp;gt;-&amp;lt;thumbnail-no&amp;gt;-&amp;lt;offset&amp;gt;&amp;lt;extension&lt;/code&gt;. An offset of &lt;code&gt;[-1, 0, 1]&lt;/code&gt; is used to produce three thumbnails from each dot, two of which are not exactly centered but moved 1 pixel diagonally up and down.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Training a Convolutional Neural Network&lt;/h2&gt;
+&lt;p&gt;At this point we have a number of 64x64 pixel thumbnails for each class that can be used to train a sea lion classification algorithm. &lt;/p&gt;
+&lt;p&gt;Using Keras on top of Tensorflow we can create a simple convolutional neural network (CNN) which can be used for 6 class classification.
+The total number of classes is 6 because we have 5 classes of sea lions plus one class for thumbnails not matching any of those 5 classes.&lt;/p&gt;
+&lt;p&gt;The model is defined with the following function:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;create_model&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Sequential&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Lambda&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mf"&gt;255.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;input_shape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Conv2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MaxPooling2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pool_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Conv2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MaxPooling2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pool_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Conv2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MaxPooling2D&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pool_size&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Flatten&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;512&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dropout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;512&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dropout&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dense&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;activation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;softmax&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;compile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;loss&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;categorical_crossentropy&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;optimizer&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;adam&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="n"&gt;metrics&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;accuracy&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;model&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The above model is a very naive and standard CNN. In &lt;strong&gt;line 4&lt;/strong&gt; a lambda function is used to normalise the pixel values in the range of &lt;code&gt;[-0.5, 0.5]&lt;/code&gt;.
+The 64x64 thumbnails given as input have 3 channels (RGB).&lt;/p&gt;
+&lt;h2&gt;Brute forcing object detection&lt;/h2&gt;
+&lt;p&gt;In order to detect the number of sea lions on the test images the trained model was utilised in another spark job. 
+The aim in this case was to receive the count of sea lions from every image in a dictionary like the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;counts = {
+        &amp;#39;adult_females&amp;#39;: 0,
+        &amp;#39;adult_males&amp;#39;: 0,
+        &amp;#39;juveniles&amp;#39;: 0,
+        &amp;#39;non_seal&amp;#39;: 0,
+        &amp;#39;pups&amp;#39;: 0,
+        &amp;#39;subadult_males&amp;#39;: 0,
+    }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A new map function was defined, in which the input image was partitioned in non overlapping 64x64 thumbnails and each one of those 
+was classified in one of the 6 available classes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;results = sc.parallelize(files).map(util.count_sea_lions).collect()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The classification step in the &lt;code&gt;count_sea_lions&lt;/code&gt; function was as follows:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;thumb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;:]&lt;/span&gt;
+        &lt;span class="n"&gt;prediction&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;model_6_class&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;reshape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;prediction&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argmax&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;prediction&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;counts&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;prediction&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Vertical Scaling on AWS EC2&lt;/h2&gt;
+&lt;p&gt;Running the above spark jobs for the classification of 86GB of test images was a very slow process on my macbook.
+In order to speed things up an EC2 instance with a significantly higher number of cores was employed. &lt;/p&gt;
+&lt;p&gt;Although spark is normally used with horizontal scaling, it can also be used to parallelise processes on multi-core machines. 
+The vertical scaling was also chosen because I tried to avoid using AWS EMR and complex master-slave setups. &lt;/p&gt;
+&lt;h4&gt;Picking the right ec2 instance&lt;/h4&gt;
+&lt;p&gt;As the task seemed to be more CPU bound and optimising for cost was a nice-to-have I started looking for an ec2 spot instance that 
+would satisfy both. To avoid using the ec2 price explorer provided on the AWS console UI I wrote a small script to present the 
+currently available ec2 instances and their cost based on a number of "features". For this particular task I needed to find an ec2 instance
+with at with 32 cores and the lowest price per core.&lt;/p&gt;
+&lt;p&gt;The script is availabe on github: &lt;a href="https://github.com/nicktgr15/ec2-spot-instance-finder"&gt;https://github.com/nicktgr15/ec2-spot-instance-finder&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Based on the results &lt;code&gt;r4.8xlarge&lt;/code&gt; was chosen.&lt;/p&gt;
+&lt;h2&gt;Putting it all together&lt;/h2&gt;
+&lt;p&gt;At this point I had:
+&lt;em&gt; a trained model
+&lt;/em&gt; the test dataset available on the ec2 instance (could have been s3 if it was bigger)
+&lt;em&gt; spark configured on the 32-core ec2 instance (the setup was exactly the same as the one I had locally)
+&lt;/em&gt; a job that was receiving as input the filename of each one of the test images and was producing an output like the following&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;{
+    &amp;quot;adult_males&amp;quot;: 2, 
+    &amp;quot;juveniles&amp;quot;: 30, 
+    &amp;quot;pups&amp;quot;: 4, 
+    &amp;quot;filename&amp;quot;: &amp;quot;15024.jpg&amp;quot;, 
+    &amp;quot;adult_females&amp;quot;: 5, 
+    &amp;quot;non_seal&amp;quot;: 5005, 
+    &amp;quot;subadult_males&amp;quot;: 0
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The spark job took around 15 hours to complete.&lt;/p&gt;
+&lt;p&gt;The results from the 18636 test images were aggregated and formatted to match the competition template.
+The first few lines from the submission file were as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;test_id,adult_males,subadult_males,adult_females,juveniles,pups
+0,3,0,9,14,3
+1,3,0,9,6,10
+2,5,0,18,26,42
+3,3,1,17,36,9
+4,48,0,78,52,40
+5,1,0,28,12,41
+6,2,0,14,12,45
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The file was submitted to kaggle and as expected it received a quite low score mainly due to the naivety of the approach.&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:100%;margin:auto;display:block;" src="images/result.png"/&gt;&lt;/p&gt;
+&lt;h2&gt;The end&lt;/h2&gt;
+&lt;p&gt;The focus of this experiment was mainly on:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;having a hands-on experience with spark employed as a parallel processing engine (on and off AWS)  &lt;/li&gt;
+&lt;li&gt;using convnets with a Big dataset (this was the first time I was using convnets for an image classification task)&lt;/li&gt;
+&lt;li&gt;having a complete submission for the competition by spending just a couple of days on the problem&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The amount of time spent on building the model was kept to as little as possible and of course there are many 
+improvements that could be done on that side. Similarly, algorithms like &lt;em&gt;Selective Search&lt;/em&gt; could be employed to speed things up during the
+classification etc.&lt;/p&gt;
+&lt;p&gt;Closing, I'd say that I definitely learned a lot by participating and I hope that you also learned something new in this blog post.
+I'm looking forward to comments and further discussion!&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="convnets"></category><category term="convolutional neural networks"></category><category term="machine learning"></category><category term="spark"></category><category term="parallel processing"></category><category term="python"></category></entry></feed>
