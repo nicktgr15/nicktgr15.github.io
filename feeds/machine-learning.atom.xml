@@ -19,7 +19,33 @@ I would expect Amazon to aim for a spot price that makes p2/p3 instances not pro
 &lt;p&gt;Furthermore, the &lt;code&gt;p2.xlarge&lt;/code&gt; I was using, was employing a Tesla K80 GPU which is based on the previous generation Kepler architecture.
 After checking a few benchmarks online it was clear that a Pascal architecture GPU with a similar amount of cores and memory
 would be probably faster.&lt;/p&gt;
-&lt;h3&gt;The Server&lt;/h3&gt;
+&lt;h3&gt;The p2.xlarge EC2 instance&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;p2.xlarge&lt;/code&gt; EC2 instance is a virtual machine with the following specs:&lt;/p&gt;
+&lt;table class="table table-striped"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;GPU Count&lt;/th&gt;&lt;th&gt;vCPU Count&lt;/th&gt;&lt;th&gt;Memory&lt;/th&gt;
+&lt;th&gt;Parallel Processing Cores&lt;/th&gt;
+&lt;th&gt;GPU Memory&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;&lt;td&gt;4&lt;/td&gt;&lt;td&gt;61 GiB&lt;/td&gt;&lt;td&gt;2496&lt;/td&gt;&lt;td&gt;12 GiB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Amazon claims that the &lt;code&gt;p2.xlarge&lt;/code&gt; is utilising the &lt;code&gt;Tesla K80&lt;/code&gt; GPU however this is only &lt;em&gt;half&lt;/em&gt; of the story.
+The &lt;code&gt;Tesla K80&lt;/code&gt; specs on the &lt;a href="http://www.nvidia.com/object/tesla-k80.html"&gt;nvidia website&lt;/a&gt; mention 4992 cuda cores
+&lt;em&gt;with a dual-GPU design&lt;/em&gt; and 24 GB of GDDR5 memory. Apparently the &lt;code&gt;K80&lt;/code&gt; is based on two &lt;code&gt;GK210&lt;/code&gt; chips on a single PCB
+and in the way this particular VM is configured, only one of these chips is available to the user. So to be fair,
+with a &lt;code&gt;p2.xlarge&lt;/code&gt; you have access to half of the resources of a &lt;code&gt;Tesla K80&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote class="blockquote"&gt;
+Amazon claims that the p2.xlarge is utilising the Tesla K80 GPU however this is only half of the story
+&lt;/blockquote&gt;
+
+&lt;h3&gt;My Server&lt;/h3&gt;
 &lt;p&gt;Long story short, the system consists of the following components:&lt;/p&gt;
 &lt;table class="table table-striped"&gt;
 &lt;thead&gt;
@@ -30,25 +56,25 @@ would be probably faster.&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
-&lt;tr&gt;&lt;td&gt;Motherboard&lt;/td&gt;&lt;td&gt;GIGABYTE GA-B250M-DS3H&lt;/td&gt;&lt;td&gt;58.85&lt;/td&gt;
+&lt;tr&gt;&lt;td&gt;Motherboard&lt;/td&gt;&lt;td&gt;GIGABYTE GA-B250M-DS3H&lt;/td&gt;&lt;td&gt;58.85&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;CPU&lt;/td&gt;&lt;td&gt;Intel G4600&lt;/td&gt;&lt;td&gt;59.99&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;RAM&lt;/td&gt;&lt;td&gt;1 x Ballistix Sport LT 8GB &lt;/td&gt;&lt;td&gt;82.23&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;RAM&lt;/td&gt;&lt;td&gt;2 x Ballistix Sport LT 8GB &lt;/td&gt;&lt;td&gt;82.23&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;PSU&lt;/td&gt;&lt;td&gt;EVGA 600 W1&lt;/td&gt;&lt;td&gt;43.21&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;Storage&lt;/td&gt;&lt;td&gt;Samsung 850 EVO 250 SSD&lt;/td&gt;&lt;td&gt;82.87&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;GPU&lt;/td&gt;&lt;td&gt;Palit GeForce GTX 1070 Ti JetStream 8GB GDDR5&lt;/td&gt;&lt;td&gt;463.97&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;Case&lt;/td&gt;&lt;td&gt;Aerocool QS240 M-ATX&lt;/td&gt;&lt;td&gt;29.99&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;821.11&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;903.34&lt;/td&gt;&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 &lt;p&gt;The plan was to use a recent platform (Kaby Lake) in order to be as power efficient as possible and have the ability to upgrade
-components in the future. It was quite difficult to find a GTX 1070 ti in stock online, for the record, http://amazon.co.uk didn't have
+components in the future. It was quite difficult to find a GTX 1070 ti in stock online, for the record &lt;a href="http://amazon.co.uk"&gt;http://amazon.co.uk&lt;/a&gt; didn't have
 any available.&lt;/p&gt;
 &lt;p&gt;&lt;img style="width:70%;margin:auto;display:block;" src="images/pc.png"/&gt;&lt;/p&gt;
 &lt;p&gt;Taking into account the current price of &lt;code&gt;p2.xlarge&lt;/code&gt; spot instance on AWS ($0.38 USD/0.27 GBP per hour) with the money
 spent to build my server I could buy &lt;code&gt;127&lt;/code&gt; days of usage while with the standard price (0.70 GBP per hour) that number would be &lt;code&gt;49&lt;/code&gt; days.&lt;/p&gt;
 &lt;h5&gt;Power Consumption / Temperatures&lt;/h5&gt;
-&lt;p&gt;The power consumption of the server was tested using a power meter and the results are as follows:&lt;/p&gt;
+&lt;p&gt;The power consumption of the server was tested using a power meter and the results were as follows:&lt;/p&gt;
 &lt;table class="table table-striped"&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -69,7 +95,7 @@ I was impressed by how small and thin CPU stock coolers are nowadays.
 &lt;/blockquote&gt;
 
 &lt;h3&gt;GTX 1070 Ti vs Tesla K80&lt;/h3&gt;
-&lt;p&gt;In order to compare the performance of the &lt;code&gt;GTX 1070 ti&lt;/code&gt; with the &lt;code&gt;Tesla K80&lt;/code&gt; used in the &lt;code&gt;p2.xlarge&lt;/code&gt; EC2 instance I executed
+&lt;p&gt;In order to compare the performance of the &lt;code&gt;GTX 1070 ti&lt;/code&gt; with (half of) the &lt;code&gt;Tesla K80&lt;/code&gt; used in the &lt;code&gt;p2.xlarge&lt;/code&gt; EC2 instance I executed
 the same experiment/benchmark on both systems. The experiment was the following:
 &lt;ul&gt;
 &lt;li&gt; A siamese LSTM deep neural network identifying similar or disimillar speakers (binary classification) &lt;/li&gt;

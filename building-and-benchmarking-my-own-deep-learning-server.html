@@ -98,7 +98,33 @@ I would expect Amazon to aim for a spot price that makes p2/p3 instances not pro
 <p>Furthermore, the <code>p2.xlarge</code> I was using, was employing a Tesla K80 GPU which is based on the previous generation Kepler architecture.
 After checking a few benchmarks online it was clear that a Pascal architecture GPU with a similar amount of cores and memory
 would be probably faster.</p>
-<h3>The Server</h3>
+<h3>The p2.xlarge EC2 instance</h3>
+<p>The <code>p2.xlarge</code> EC2 instance is a virtual machine with the following specs:</p>
+<table class="table table-striped">
+<thead>
+<tr>
+<th>GPU Count</th><th>vCPU Count</th><th>Memory</th>
+<th>Parallel Processing Cores</th>
+<th>GPU Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td><td>4</td><td>61 GiB</td><td>2496</td><td>12 GiB</td>
+</tr>
+</tbody>
+</table>
+
+<p>Amazon claims that the <code>p2.xlarge</code> is utilising the <code>Tesla K80</code> GPU however this is only <em>half</em> of the story.
+The <code>Tesla K80</code> specs on the <a href="http://www.nvidia.com/object/tesla-k80.html">nvidia website</a> mention 4992 cuda cores
+<em>with a dual-GPU design</em> and 24 GB of GDDR5 memory. Apparently the <code>K80</code> is based on two <code>GK210</code> chips on a single PCB
+and in the way this particular VM is configured, only one of these chips is available to the user. So to be fair,
+with a <code>p2.xlarge</code> you have access to half of the resources of a <code>Tesla K80</code>.</p>
+<blockquote class="blockquote">
+Amazon claims that the p2.xlarge is utilising the Tesla K80 GPU however this is only half of the story
+</blockquote>
+
+<h3>My Server</h3>
 <p>Long story short, the system consists of the following components:</p>
 <table class="table table-striped">
 <thead>
@@ -109,25 +135,25 @@ would be probably faster.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td>Motherboard</td><td>GIGABYTE GA-B250M-DS3H</td><td>58.85</td>
+<tr><td>Motherboard</td><td>GIGABYTE GA-B250M-DS3H</td><td>58.85</td></tr>
 <tr><td>CPU</td><td>Intel G4600</td><td>59.99</td></tr>
-<tr><td>RAM</td><td>1 x Ballistix Sport LT 8GB </td><td>82.23</td></tr>
+<tr><td>RAM</td><td>2 x Ballistix Sport LT 8GB </td><td>82.23</td></tr>
 <tr><td>PSU</td><td>EVGA 600 W1</td><td>43.21</td></tr>
 <tr><td>Storage</td><td>Samsung 850 EVO 250 SSD</td><td>82.87</td></tr>
 <tr><td>GPU</td><td>Palit GeForce GTX 1070 Ti JetStream 8GB GDDR5</td><td>463.97</td></tr>
 <tr><td>Case</td><td>Aerocool QS240 M-ATX</td><td>29.99</td></tr>
-<tr><td></td><td></td><td>821.11</td></tr>
+<tr><td></td><td></td><td>903.34</td></tr>
 </tbody>
 </table>
 
 <p>The plan was to use a recent platform (Kaby Lake) in order to be as power efficient as possible and have the ability to upgrade
-components in the future. It was quite difficult to find a GTX 1070 ti in stock online, for the record, http://amazon.co.uk didn't have
+components in the future. It was quite difficult to find a GTX 1070 ti in stock online, for the record <a href="http://amazon.co.uk">http://amazon.co.uk</a> didn't have
 any available.</p>
 <p><img style="width:70%;margin:auto;display:block;" src="images/pc.png"/></p>
 <p>Taking into account the current price of <code>p2.xlarge</code> spot instance on AWS ($0.38 USD/0.27 GBP per hour) with the money
 spent to build my server I could buy <code>127</code> days of usage while with the standard price (0.70 GBP per hour) that number would be <code>49</code> days.</p>
 <h5>Power Consumption / Temperatures</h5>
-<p>The power consumption of the server was tested using a power meter and the results are as follows:</p>
+<p>The power consumption of the server was tested using a power meter and the results were as follows:</p>
 <table class="table table-striped">
 <thead>
 <tr>
@@ -148,7 +174,7 @@ I was impressed by how small and thin CPU stock coolers are nowadays.
 </blockquote>
 
 <h3>GTX 1070 Ti vs Tesla K80</h3>
-<p>In order to compare the performance of the <code>GTX 1070 ti</code> with the <code>Tesla K80</code> used in the <code>p2.xlarge</code> EC2 instance I executed
+<p>In order to compare the performance of the <code>GTX 1070 ti</code> with (half of) the <code>Tesla K80</code> used in the <code>p2.xlarge</code> EC2 instance I executed
 the same experiment/benchmark on both systems. The experiment was the following:
 <ul>
 <li> A siamese LSTM deep neural network identifying similar or disimillar speakers (binary classification) </li>
