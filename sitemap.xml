@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>./building-and-benchmarking-my-own-deep-learning-server.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>./analysing-100gb-of-aerial-photos-to-identify-sea-lions-using-tensorflow-and-spark-on-aws.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>./pages/about.html</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>./pages/contact.html</loc>
+    <priority>1.0</priority>
+  </url>
+</urlset>
