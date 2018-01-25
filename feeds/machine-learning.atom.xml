@@ -40,7 +40,7 @@ would be probably faster.&lt;/p&gt;
 The &lt;code&gt;Tesla K80&lt;/code&gt; specs on the &lt;a href="http://www.nvidia.com/object/tesla-k80.html"&gt;nvidia website&lt;/a&gt; mention 4992 cuda cores
 &lt;em&gt;with a dual-GPU design&lt;/em&gt; and 24 GB of GDDR5 memory. Apparently the &lt;code&gt;K80&lt;/code&gt; is based on two &lt;code&gt;GK210&lt;/code&gt; chips on a single PCB
 and in the way this particular VM is configured, only one of these chips is available to the user. So to be fair,
-with a &lt;code&gt;p2.xlarge&lt;/code&gt; you have access to half of the resources of a &lt;code&gt;Tesla K80&lt;/code&gt;.&lt;/p&gt;
+with a &lt;code&gt;p2.xlarge&lt;/code&gt; you have access to half the resources of a &lt;code&gt;Tesla K80&lt;/code&gt;.&lt;/p&gt;
 &lt;blockquote class="blockquote"&gt;
 Amazon claims that the p2.xlarge is utilising a Tesla K80 GPU however this is only half of the story
 &lt;/blockquote&gt;
