@@ -51,7 +51,20 @@ detailed photo with lower levels of noise. &lt;/p&gt;
 &lt;p&gt;&lt;a href="images/southside-inside-2x-zoom-1.jpg"&gt;
 &lt;img style="width:100%;margin:auto;display:block;" src="images/southside-inside-2x-zoom-1.jpg"/&gt;
 &lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;Example 5 (Low light indoors) &lt;/h3&gt;
+&lt;h3&gt;Example 5 (Outdoors wide-angle) &lt;/h3&gt;
+
+&lt;p&gt;In this example the wide-angle camera is used on s10+ and s21. I've also taken the same photo with s9 to have it 
+as a reference point (s9 doesn't have a wide-angle camera/lens).&lt;/p&gt;
+&lt;p&gt;&lt;a href="images/wide-full.jpg"&gt;&lt;img style="width:100%;margin:auto;display:block;" src="images/wide.jpg"/&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The image from S21 is definitely sharper than the S10+,  without any unwanted artifacts caused by post-processing.
+So far in the comparison I think it's the most obvious improvement brought by S21.&lt;/p&gt;
+&lt;p&gt;&lt;a href="images/wide-zoom-1.jpg"&gt;
+&lt;img style="width:100%;margin:auto;display:block;" src="images/wide-zoom-1.jpg"/&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="images/wide-zoom-2.jpg"&gt;
+&lt;img style="width:100%;margin:auto;display:block;" src="images/wide-zoom-2.jpg"/&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Example 6 (Low light indoors) &lt;/h3&gt;
 
 &lt;p&gt;The "night mode" was enabled in all three devices for this photo and there's also a fourth image coming from a Nikon 
 D3400 DSLR to make the comparison a bit more interesting. &lt;/p&gt;
@@ -64,6 +77,16 @@ noise reduction during post-processing, however without affecting the image deta
 To be able to take a photo without flash with the D3400 I had to use a pretty high ISO (128000) which caused a lot of
 noise in the photo. With some post-processing it could look better but it's still not a great image. It's impressive
 that modern smartphones can perform better than DSRLs in scenarios like this (at least "handheld" :D).&lt;/p&gt;
+&lt;h3&gt;Example 7 (1080p Video) &lt;/h3&gt;
+
+&lt;p&gt;Finally, to make the comparison a bit more thorough I've included two sample videos taken with the main camera
+of each device. In one of them I'm walking while recording to capture some of the image stabilisation properties
+of the devices. In hindsight, I could have captured 4k video with all three devices, but apart from the lower 
+resolution, 1080p should be ok to get an idea.&lt;/p&gt;
+&lt;div style="text-align: center"&gt;
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/fPVlWDk0goM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
 &lt;h3&gt;Verdict&lt;/h3&gt;
 
 &lt;p&gt;The more recent S21 seems to be the best performer in this test. However, the differences between the S10+ and S21 are minimal 
