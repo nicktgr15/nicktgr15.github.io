@@ -22,20 +22,14 @@
 
 
 <meta name="description" content="With this post I will attempt to describe the approach I followed in order to analyze 100GB of image data for the purpose of identifying sea lions in aerial photos as part of this kaggle competition. The reason why I found this competition an interesting challenge was threefold: was for …">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-37767324-2"></script>
 <script>
-  (function(i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r;
-    i[r] = i[r] || function() {
-      (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date();
-    a = s.createElement(o);
-    a.async = 1;
-    a.src = g;
-    m = s.getElementsByTagName(o)[0];
-    m.parentNode.insertBefore(a, m)
-  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-  ga('create', 'UA-37767324-2', 'auto');
-  ga('send', 'pageview');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-37767324-2');
 </script>
 </head>
 
@@ -92,11 +86,11 @@ The dataset consists of 18636 images used as test data and 949 images used as tr
 <li>
 <p><strong>Submission format</strong><br>
 The classification results are submitted using the following csv format. The <code>test_id</code> represents the test image from which the corresponding counts for each type of sea lion have been calculated. It's obvious that during the evaluation the only processing that takes place in kaggle is the comparison of the submitted results with the ground truth i.e. validation is quick.</p>
-<div class="highlight"><pre><span></span><code><span class="err">test_id,adult_males,subadult_males,adult_females,juveniles,pups</span>
-<span class="err">0,1,1,1,1,1</span>
-<span class="err">1,1,1,1,1,1</span>
-<span class="err">2,1,1,1,1,1</span>
-<span class="err">etc</span>
+<div class="highlight"><pre><span></span><code>test_id,adult_males,subadult_males,adult_females,juveniles,pups
+0,1,1,1,1,1
+1,1,1,1,1,1
+2,1,1,1,1,1
+etc
 </code></pre></div>
 
 </li>
@@ -111,24 +105,24 @@ The submitted results are evaluated using the Root Mean Square Error (RMSE) metr
 <p><img style="width:100%;margin:auto;display:block;" src="images/blob_detection.png"/></p>
 <p>In the above figure three different versions of an example training image are presented. On the left side, the dotted version, in the middle, the absolute difference between the dotted and non-dotted images and finally, on the right side, the 64x64 pixels bounding boxes indicating the actual regions of the image that will be used as training samples for each class. The Laplacian of Gaussian blob detection algorithm is used to get the locations of the dots appearing on the middle image and when those locations are retrieved the type/colour of the corresponding sea lion is extracted from the original dotted training image. </p>
 <p>This whole, devious procedure is required because of the way the training data were provided by the competition organisers (i.e. as part of the image) so the coordinates and class information need to be extracted through some kind of post-processing. For each training image a dictionary like the following is generated.</p>
-<div class="highlight"><pre><span></span><code><span class="err">{</span>
-<span class="err">    &quot;sea-lions&quot;: {</span>
-<span class="err">        &quot;adult_males&quot;: [</span>
-<span class="err">                [dot_x, dot_y],</span>
-<span class="err">                ...</span>
-<span class="err">        ],</span>
-<span class="err">        &quot;subadult_males&quot;: [ ... ],</span>
-<span class="err">        &quot;adult_females&quot;: [ ... ],</span>
-<span class="err">        &quot;juveniles&quot;: [ ... ],</span>
-<span class="err">        &quot;pups&quot;: [ ... ],</span>
-<span class="err">    },</span>
-<span class="err">    &quot;filename&quot;: image_filename</span>
-<span class="err">}</span>
+<div class="highlight"><pre><span></span><code>{
+    &quot;sea-lions&quot;: {
+        &quot;adult_males&quot;: [
+                [dot_x, dot_y],
+                ...
+        ],
+        &quot;subadult_males&quot;: [ ... ],
+        &quot;adult_females&quot;: [ ... ],
+        &quot;juveniles&quot;: [ ... ],
+        &quot;pups&quot;: [ ... ],
+    },
+    &quot;filename&quot;: image_filename
+}
 </code></pre></div>
 
 <h2>Spark sparks creative (and a bit unorthodox) thinking</h2>
 <p>To speedup the above procedure, which was underutilising the multiple cores available on my macbook, an attempt to parallelise it using spark was made. Spark is quite straightforward to run locally in standalone mode, and will by default utilise all available cpu resources. As long as Java is installed, the binaries can be downloaded from <a href="https://spark.apache.org/downloads.html">https://spark.apache.org/downloads.html</a> and after extracting the contents of the archive a spark job can be executed as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="err">./spark-2.1.1-bin-hadoop2.7/bin/spark-submit my_pyspark_job.py</span>
+<div class="highlight"><pre><span></span><code>./spark-2.1.1-bin-hadoop2.7/bin/spark-submit my_pyspark_job.py
 </code></pre></div>
 
 <p>With this spark job we wanted to achieve the following:  </p>
@@ -137,26 +131,26 @@ The submitted results are evaluated using the Root Mean Square Error (RMSE) metr
 <li>From each training image generate 64x64 thumbnails centered on the coordinates extracted in the previous step  </li>
 </ul>
 <p>Let's go through the actual code.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkConf</span><span class="p">,</span> <span class="n">SparkContext</span>
@@ -192,31 +186,31 @@ The following screenshot from the spark ui shows that only one executor is creat
 <p>Using Keras on top of Tensorflow we can create a simple convolutional neural network (CNN) which can be used for 6 class classification.
 The total number of classes is 6 because we have 5 classes of sea lions plus one class for thumbnails not matching any of those 5 classes.</p>
 <p>The model is defined with the following function:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_model</span><span class="p">():</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_model</span><span class="p">():</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
@@ -248,28 +242,28 @@ The 64x64 thumbnails given as input have 3 channels (RGB).</p>
 <h2>Brute forcing object detection</h2>
 <p>In order to detect the number of sea lions on the test images the trained model was utilised in another spark job. 
 The aim in this case was to receive the count of sea lions from every image in a dictionary like the following:</p>
-<div class="highlight"><pre><span></span><code><span class="err">counts = {</span>
-<span class="err">        &#39;adult_females&#39;: 0,</span>
-<span class="err">        &#39;adult_males&#39;: 0,</span>
-<span class="err">        &#39;juveniles&#39;: 0,</span>
-<span class="err">        &#39;non_seal&#39;: 0,</span>
-<span class="err">        &#39;pups&#39;: 0,</span>
-<span class="err">        &#39;subadult_males&#39;: 0,</span>
-<span class="err">    }</span>
+<div class="highlight"><pre><span></span><code>counts = {
+        &#39;adult_females&#39;: 0,
+        &#39;adult_males&#39;: 0,
+        &#39;juveniles&#39;: 0,
+        &#39;non_seal&#39;: 0,
+        &#39;pups&#39;: 0,
+        &#39;subadult_males&#39;: 0,
+    }
 </code></pre></div>
 
 <p>A new map function was defined, in which the input image was partitioned in non overlapping 64x64 thumbnails and each one of those 
 was classified in one of the 6 available classes.</p>
-<div class="highlight"><pre><span></span><code><span class="err">results = sc.parallelize(files).map(util.count_sea_lions).collect()</span>
+<div class="highlight"><pre><span></span><code>results = sc.parallelize(files).map(util.count_sea_lions).collect()
 </code></pre></div>
 
 <p>The classification step in the <code>count_sea_lions</code> function was as follows:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">64</span><span class="p">):</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">64</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">64</span><span class="p">):</span>
         <span class="n">thumb</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">64</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">64</span><span class="p">,</span> <span class="p">:]</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="n">model_6_class</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">thumb</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -295,29 +289,29 @@ with at with 32 cores and the lowest price per core.</p>
 * the test dataset available on the ec2 instance (could have been s3 if it was bigger)
 * spark configured on the 32-core ec2 instance (the setup was exactly the same as the one I had locally)
 * a job that was receiving as input the filename of each one of the test images and was producing an output like the following</p>
-<div class="highlight"><pre><span></span><code><span class="err">{</span>
-<span class="err">    &quot;adult_males&quot;: 2, </span>
-<span class="err">    &quot;juveniles&quot;: 30, </span>
-<span class="err">    &quot;pups&quot;: 4, </span>
-<span class="err">    &quot;filename&quot;: &quot;15024.jpg&quot;, </span>
-<span class="err">    &quot;adult_females&quot;: 5, </span>
-<span class="err">    &quot;non_seal&quot;: 5005, </span>
-<span class="err">    &quot;subadult_males&quot;: 0</span>
-<span class="err">}</span>
+<div class="highlight"><pre><span></span><code>{
+    &quot;adult_males&quot;: 2, 
+    &quot;juveniles&quot;: 30, 
+    &quot;pups&quot;: 4, 
+    &quot;filename&quot;: &quot;15024.jpg&quot;, 
+    &quot;adult_females&quot;: 5, 
+    &quot;non_seal&quot;: 5005, 
+    &quot;subadult_males&quot;: 0
+}
 </code></pre></div>
 
 <p>The spark job took around 15 hours to complete.</p>
 <p>The results from the 18636 test images were aggregated and formatted to match the competition template.
 The first few lines from the submission file were as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="err">test_id,adult_males,subadult_males,adult_females,juveniles,pups</span>
-<span class="err">0,3,0,9,14,3</span>
-<span class="err">1,3,0,9,6,10</span>
-<span class="err">2,5,0,18,26,42</span>
-<span class="err">3,3,1,17,36,9</span>
-<span class="err">4,48,0,78,52,40</span>
-<span class="err">5,1,0,28,12,41</span>
-<span class="err">6,2,0,14,12,45</span>
-<span class="err">...</span>
+<div class="highlight"><pre><span></span><code>test_id,adult_males,subadult_males,adult_females,juveniles,pups
+0,3,0,9,14,3
+1,3,0,9,6,10
+2,5,0,18,26,42
+3,3,1,17,36,9
+4,48,0,78,52,40
+5,1,0,28,12,41
+6,2,0,14,12,45
+...
 </code></pre></div>
 
 <p>The file was submitted to kaggle and as expected it received a quite low score mainly due to the naivety of the approach.</p>
