@@ -1057,7 +1057,6 @@ in the time domain, then we would have to make sacrifices in our frequency domai
 when using this wonderful tool (i.e. the DFT). 
 Hopefully, next time you'll have to decide about the size of your analysis window or the required sampling rate 
 you will have the right arguments to support your decisions.&lt;/p&gt;
-&lt;p&gt;Looking forward to comments and corrections.&lt;/p&gt;
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
