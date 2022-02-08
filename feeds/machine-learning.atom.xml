@@ -540,7 +540,7 @@ characteristics. We will implement everything from scratch using python in order
 
 &lt;p&gt;The forward discrete fourier transform (DFT):&lt;/p&gt;
 &lt;div class="math"&gt;$$X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i~2\pi~k~n~/~N}$$&lt;/div&gt;
-&lt;p&gt;For the DFT calculation I will borrow the not optimized implementation from &lt;a href="http://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/"&gt;an other&lt;/a&gt; blog post.&lt;/p&gt;
+&lt;p&gt;For the DFT calculation I will borrow the non optimized implementation from &lt;a href="http://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/"&gt;an other&lt;/a&gt; blog post.&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
 &lt;span class="normal"&gt;2&lt;/span&gt;
 &lt;span class="normal"&gt;3&lt;/span&gt;

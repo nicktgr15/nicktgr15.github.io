@@ -18,7 +18,7 @@ low-pass RC filter employed in the tone control section of your guitar.&lt;/p&gt
 
 &lt;p&gt;Below I've tried to model the circuit of a guitar with a single pickup (used the specs of a Seymour Duncan JB), 
 a volume pot and a tone pot. In the blue circle I've highlighted the components used in the tone filter. &lt;/p&gt;
-&lt;p&gt;&lt;img style="width:70%;margin:auto;display:block;" src="images/tone-circuit.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:95%;margin:auto;display:block;" src="images/tone-circuit.png"/&gt;&lt;/p&gt;
 &lt;p&gt;Approaching it as an RC filter (although it's not exactly an RC filter), there is a cutoff frequency
 where the gain of the of the circuit is -3dB. The cutoff frequency for an RC filter is given by the following
 formula.&lt;/p&gt;
@@ -32,11 +32,11 @@ frequency response retrieved by running a circuit simulator. One with
 the pot set to &lt;span class="math"&gt;\(300k\Omega\)&lt;/span&gt; (which is equivalent to having the tone at around 7-8 - for &lt;span class="math"&gt;\(500k\Omega\)&lt;/span&gt;, logarithmic pots), 
 in the second example the tone pot is set to &lt;span class="math"&gt;\(100k\Omega\)&lt;/span&gt; (tone at around 4-5). As we can see the filter bandwidth
 gets narrower, the smaller the value of the tone pot becomes.&lt;/p&gt;
-&lt;p&gt;&lt;img style="width:80%;margin:auto;display:block;" src="images/filter-bandwidth.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:95%;margin:auto;display:block;" src="images/filter-bandwidth.jpg"/&gt;&lt;/p&gt;
 &lt;p&gt;Similarly, (and as expected from the RC filter formula) changing the value of the capacitor will also have an impact on
 the bandwidth. Bellow I've set the tone pot to &lt;span class="math"&gt;\(30k\Omega\)&lt;/span&gt; and then I did run the simulation with an &lt;span class="math"&gt;\(11nF\)&lt;/span&gt; capacitor 
 and then with a  &lt;span class="math"&gt;\(44nF\)&lt;/span&gt; capacitor. In the latter, the filter bandwidth gets narrower.&lt;/p&gt;
-&lt;p&gt;&lt;img style="width:80%;margin:auto;display:block;" src="images/filter-bandwidth-capacitor.jpg"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img style="width:95%;margin:auto;display:block;" src="images/filter-bandwidth-capacitor.jpg"/&gt;&lt;/p&gt;
 &lt;p&gt;Now the question is, what happens when we keep the value of the capacitor as is but we change the type of the capacitor.
 I didn't run a simulation for that, although it might be possible if we use a more realistic model of a non-ideal
 capacitor. Instead, I run a test, which I'll describe below.&lt;/p&gt;
@@ -65,8 +65,8 @@ The guitar pickup and the tone pot value was as follows for the four samples:&lt
 &lt;/ul&gt;
 &lt;p&gt;I won't share my thoughts around the results yet as I don't want to influence your assessment. 
 You can find the full comparison in the link below. Feel free to share your thoughts and feedback in the comments.&lt;/p&gt;
-&lt;div style="text-align: center"&gt;
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/uBiWXnLaoWI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;div style="text-align: center;"&gt;
+&lt;iframe width="460" height="250" src="https://www.youtube.com/embed/uBiWXnLaoWI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
