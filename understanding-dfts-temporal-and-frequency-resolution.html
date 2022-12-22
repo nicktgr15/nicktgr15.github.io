@@ -84,52 +84,27 @@ characteristics. We will implement everything from scratch using python in order
 <h3>Discrete Fourier Transform (DFT)</h3>
 
 <p>The forward discrete fourier transform (DFT):</p>
-<div class="math">$$X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i~2\pi~k~n~/~N}$$</div>
+<p>$$X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i~2\pi~k~n~/~N}$$</p>
 <p>For the DFT calculation I will borrow the non optimized implementation from <a href="http://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/">an other</a> blog post.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">def</span> <span class="nf">DFT</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the discrete Fourier Transform of the 1D array x&quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kp">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="kp">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="kp">reshape</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="kp">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 </code></pre></div>
-</td></tr></table>
+
 <h3>Signal Generation / Sampling</h3>
 
 <p>We need to define an example signal that will be used for the analysis. A sine voltage signal would be appropriate in our case.</p>
-<div class="math">$$y = Asin(\omega t+\phi)$$</div>
-<p>Let's create and sample our sine wave. (<span class="math">\(A=1\)</span>, <span class="math">\(\phi=0\)</span>)</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<p>$$y = Asin(\omega t+\phi)$$</p>
+<p>Let's create and sample our sine wave. ($A=1$, $\phi=0$)</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="mf">50.0</span> 
 <span class="n">T</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">f</span> <span class="o">*</span> <span class="mi">1000</span> 
@@ -150,7 +125,7 @@ characteristics. We will implement everything from scratch using python in order
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</td></tr></table>
+
 <p>The output of the above is </p>
 <div class="highlight"><pre><span></span><code>Signal Frequency: 50.0 Hz (Period: 20.0 ms)
 Sampling Rate: 50.0 Hz, Duration: 5.0 s
@@ -161,26 +136,8 @@ Number of samples: 4000
 <h3>DFT calculation</h3>
 
 <p>Let's calculate the DFT using the above signal as input.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">dft</span> <span class="o">=</span> <span class="n">DFT</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="n">dft</span> <span class="o">=</span> <span class="n">DFT</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
 <span class="n">dft_magnitude</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dft</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dft</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DFT bins: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -201,37 +158,25 @@ Number of samples: 4000
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">245</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="n">dft_magnitude</span><span class="p">[</span><span class="mi">245</span><span class="p">:</span><span class="mi">255</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</td></tr></table>
+
 <p>The output of the above is </p>
 <div class="highlight"><pre><span></span><code>DFT bins: 2000
 Nyquist frequency: 400.0 Hz
 </code></pre></div>
 
 <p><img style="width:90%;margin:auto;display:block;" src="images/dft.jpg"/></p>
-<p>The Nyquist frequency is equal to <span class="math">\(\frac{1}{2}\)</span> of the sampling rate of a discrete signal processing system. Based on the fact that the Nyquist frequency is the maximum frequency we can have in our DFT spectrum we can calculate the DFT bin size as follows:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">dft_bin_width</span> <span class="o">=</span> <span class="n">f_nyquist</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="p">)</span>
+<p>The Nyquist frequency is equal to $\frac{1}{2}$ of the sampling rate of a discrete signal processing system. Based on the fact that the Nyquist frequency is the maximum frequency we can have in our DFT spectrum we can calculate the DFT bin size as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="n">dft_bin_width</span> <span class="o">=</span> <span class="n">f_nyquist</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DFT bin width: </span><span class="si">{</span><span class="n">dft_bin_width</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span> 
 </code></pre></div>
-</td></tr></table>
+
 <div class="highlight"><pre><span></span><code>DFT bin width: 0.2 Hz
 </code></pre></div>
 
 <p>We can now redraw the DFT spectrum using Hz as the x-axis unit this time.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;DFT&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;magnitude (V)&#39;</span><span class="p">)</span>
@@ -246,46 +191,26 @@ Nyquist frequency: 400.0 Hz
 <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;bin width </span><span class="si">%2.2f</span><span class="s1"> Hz&#39;</span> <span class="o">%</span> <span class="n">dft_bin_width</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">50.2</span><span class="p">,</span><span class="mi">1800</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</td></tr></table>
+
 <p><img style="width:90%;margin:auto;display:block;" src="images/dft-2.jpg"/></p>
 <p>The peak in the DFT spectrum is, as expected, at:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span> <span class="o">*</span> <span class="n">dft_bin_width</span><span class="p">)</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span> <span class="o">*</span> <span class="n">dft_bin_width</span><span class="p">)</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span>
 </code></pre></div>
-</td></tr></table>
-<div class="highlight"><pre><span></span><code><span class="mf">50.00</span> <span class="n">Hz</span>
+
+<div class="highlight"><pre><span></span><code><span class="mf">50.00</span><span class="w"> </span><span class="n">Hz</span><span class="w"></span>
 </code></pre></div>
 
 <p>Based on the above:</p>
-<div class="math">$$DFT~bin~width = \frac{f_{nyquist}}{n_{samples}} = \frac{f_s / 2}{n_{samples}} $$</div>
-<p>where, if we consider <span class="math">\(f_s\)</span> constant, we conclude that DFT bin width is inversely proportional to the number of samples we use to calculate the DFT.</p>
+<p>$$DFT~bin~width = \frac{f_{nyquist}}{n_{samples}} = \frac{f_s / 2}{n_{samples}} $$</p>
+<p>where, if we consider $f_s$ constant, we conclude that DFT bin width is inversely proportional to the number of samples we use to calculate the DFT.</p>
 <p>Rephrasing, DFT <strong>frequency resolution is inversely proportional to the temporal resolution</strong>.</p>
 <p>Of course, we should always not forget that by increasing the sampling rate we can get more samples in less time and consequently improve both our temporal and frequency resolution.</p>
 <h3>Example</h3>
 
 <p>To better understand our conclusion we will explore how temporal and frequency resolution relate to each other with an example. Let's define a signal similar to the one we initially defined but this time containing 2 sine waves with frequencies equal to 50 and 60 Hz.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">f1</span> <span class="o">=</span> <span class="mf">50.0</span>  
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="mf">50.0</span>  
 <span class="n">f2</span> <span class="o">=</span> <span class="mf">55.0</span>
 
 <span class="n">fs</span> <span class="o">=</span> <span class="mf">1000.0</span>
@@ -309,7 +234,7 @@ Nyquist frequency: 400.0 Hz
 <span class="n">f_nyquist</span> <span class="o">=</span> <span class="n">fs</span> <span class="o">/</span> <span class="mi">2</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Nyquist frequency: </span><span class="si">{</span><span class="n">f_nyquist</span><span class="si">}</span><span class="s1"> Hz&#39;</span><span class="p">)</span>
 </code></pre></div>
-</td></tr></table>
+
 <div class="highlight"><pre><span></span><code>Sampling Rate: 1000.0 Hz, Duration: 5.0 s
 Number of samples: 5000
 Nyquist frequency: 500.0 Hz
@@ -318,19 +243,8 @@ Nyquist frequency: 500.0 Hz
 <p><img style="width:80%;margin:auto;display:block;" src="images/dft-2-signals.jpg"/></p>
 <p>Let's see how the number of samples (i.e. temporal resolution) affects the DFT bin size (i.e. frequency resolution) 
 and when we have problems.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!python</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
@@ -344,7 +258,7 @@ and when we have problems.</p>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dft_magnitude</span><span class="p">))</span> <span class="o">*</span> <span class="n">dft_bin_width</span><span class="p">,</span> <span class="n">dft_magnitude</span><span class="p">,</span> <span class="s1">&#39;-x&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</td></tr></table>
+
 <p><img style="width:100%;margin:auto;display:block;" src="images/dft-results.jpg"/></p>
 <p>We see that when the number of samples used to calculate the DFT (which is effectively the length of the 
 analysis window) drops bellow 1000 we are unable to identify the two superimposed sine signals. Similarly, 
@@ -355,68 +269,6 @@ in the time domain, then we would have to make sacrifices in our frequency domai
 when using this wonderful tool (i.e. the DFT). 
 Hopefully, next time you'll have to decide about the size of your analysis window or the required sampling rate 
 you will have the right arguments to support your decisions.</p>
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
   </div>
 </article>
 <hr>

@@ -100,20 +100,20 @@ a volume pot and a tone pot. In the blue circle I've highlighted the components 
 <p>Approaching it as an RC filter (although it's not exactly an RC filter), there is a cutoff frequency
 where the gain of the of the circuit is -3dB. The cutoff frequency for an RC filter is given by the following
 formula.</p>
-<div class="math">$$f_{cutoff} = \frac{1}{2\pi RC}$$</div>
-<p>The area between 0 Hz and <span class="math">\(f_{cutoff}\)</span> defines the bandwidth of the filter. The circuit in our guitars is a bit more 
+<p>$$f_{cutoff} = \frac{1}{2\pi RC}$$</p>
+<p>The area between 0 Hz and $f_{cutoff}$ defines the bandwidth of the filter. The circuit in our guitars is a bit more 
 complicated than a simple RC filter but it's safe to assume that the bandwidth of the filter is inversely proportional
 to the resistance of the tone pot and the capacitance of the tone capacitor.</p>
 <p>A filter with a wider bandwidth will have more treble whereas a filter with a narrower bandwidth will have less treble.
 The bandwidth on the guitar is controlled using the tone pot variable resistor and bellow I have two examples of the
 frequency response retrieved by running a circuit simulator. One with
-the pot set to <span class="math">\(300k\Omega\)</span> (which is equivalent to having the tone at around 7-8 - for <span class="math">\(500k\Omega\)</span>, logarithmic pots), 
-in the second example the tone pot is set to <span class="math">\(100k\Omega\)</span> (tone at around 4-5). As we can see the filter bandwidth
+the pot set to $300k\Omega$ (which is equivalent to having the tone at around 7-8 - for $500k\Omega$, logarithmic pots), 
+in the second example the tone pot is set to $100k\Omega$ (tone at around 4-5). As we can see the filter bandwidth
 gets narrower, the smaller the value of the tone pot becomes.</p>
 <p><img style="width:95%;margin:auto;display:block;" src="images/filter-bandwidth.jpg"/></p>
 <p>Similarly, (and as expected from the RC filter formula) changing the value of the capacitor will also have an impact on
-the bandwidth. Bellow I've set the tone pot to <span class="math">\(30k\Omega\)</span> and then I did run the simulation with an <span class="math">\(11nF\)</span> capacitor 
-and then with a  <span class="math">\(44nF\)</span> capacitor. In the latter, the filter bandwidth gets narrower.</p>
+the bandwidth. Bellow I've set the tone pot to $30k\Omega$ and then I did run the simulation with an $11nF$ capacitor 
+and then with a  $44nF$ capacitor. In the latter, the filter bandwidth gets narrower.</p>
 <p><img style="width:95%;margin:auto;display:block;" src="images/filter-bandwidth-capacitor.jpg"/></p>
 <p>Now the question is, what happens when we keep the value of the capacitor as is but we change the type of the capacitor.
 I didn't run a simulation for that, although it might be possible if we use a more realistic model of a non-ideal
@@ -121,14 +121,14 @@ capacitor. Instead, I run a test, which I'll describe below.</p>
 <h3>Test Setup</h3>
 <p>In order to be able to do quick A/B comparisons between capacitors without having to use a soldering iron I built a simple
 circuit that allows to connect up to 5 different capacitors and enable one (or more - as I'm using latching switches) at a time.
-As already mentioned a <span class="math">\(500k\Omega\)</span> tone pot is used along with the following capacitors (capacitance, as measured
+As already mentioned a $500k\Omega$ tone pot is used along with the following capacitors (capacitance, as measured
 with a multimeter, indicated in brackets):</p>
 <ul>
-<li>Orange Drop  (<span class="math">\(21.52 nF\)</span>)</li>
-<li>Paper-in-Oil  (<span class="math">\(26.47 nF\)</span>)</li>
-<li>Polystyrene  (<span class="math">\(22.35 nF\)</span>)</li>
-<li>Polyester Film  (<span class="math">\(22.35 nF\)</span>)</li>
-<li>Ceramic  (<span class="math">\(22.94 nF\)</span>)</li>
+<li>Orange Drop  ($21.52 nF$)</li>
+<li>Paper-in-Oil  ($26.47 nF$)</li>
+<li>Polystyrene  ($22.35 nF$)</li>
+<li>Polyester Film  ($22.35 nF$)</li>
+<li>Ceramic  ($22.94 nF$)</li>
 </ul>
 <p>The Paper-in-Oil capacitor is slightly larger than the nominal value, but it's not a huge difference and 
 shouldn't have significant impact on the filter shape. The small circuit board was wired directly between the tone pot
@@ -146,69 +146,6 @@ You can find the full comparison in the link below. Feel free to share your thou
 <div style="text-align: center;">
 <iframe width="460" height="250" src="https://www.youtube.com/embed/uBiWXnLaoWI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
-
-<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width < 768) ? "left" : align;
-        indent = (screen.width < 768) ? "0em" : indent;
-        linebreak = (screen.width < 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        availableFonts: ['STIX', 'TeX']," +
-        "        preferredFont: 'STIX'," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-</script>
   </div>
 </article>
 <hr>
