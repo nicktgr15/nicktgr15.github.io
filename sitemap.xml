@@ -1,43 +1,391 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nicktgr15.github.io/marshall-amps-genealogy-tree-from-jtm45-to-jvm-series.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/testing-different-types-of-guitar-tone-capacitors-orange-drop-vs-paper-in-oil-vs-polystyrene-vs-polyester-vs-ceramic.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/samsung-galaxy-camera-comparison-s9-vs-s10-vs-s21.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/testing-how-sharp-nikkor-24mm-f28-af-d-is-on-nikon-fx.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/a-small-story-about-writing-my-phd-thesis.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/building-and-benchmarking-my-own-deep-learning-server.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/analysing-100gb-of-aerial-photos-to-identify-sea-lions-using-tensorflow-and-spark-on-aws.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/understanding-dfts-temporal-and-frequency-resolution.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/pages/about.html</loc>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://nicktgr15.github.io/pages/contact.html</loc>
-    <priority>1.0</priority>
-  </url>
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url>
+<loc>https://nicktgr15.github.io/</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tags.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/categories.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/archives.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/sitemap.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/privacy_policy.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/pages/about.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/pages/contact.html</loc>
+<lastmod>2025-04-10T11:59:03-00:00</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/marshall-amps-genealogy-tree-from-jtm45-to-jvm-series.html</loc>
+<lastmod>2022-05-23T00:58:00+01:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/testing-different-types-of-guitar-tone-capacitors-orange-drop-vs-paper-in-oil-vs-polystyrene-vs-polyester-vs-ceramic.html</loc>
+<lastmod>2022-02-06T15:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/samsung-galaxy-camera-comparison-s9-vs-s10-vs-s21.html</loc>
+<lastmod>2021-01-30T15:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/testing-how-sharp-nikkor-24mm-f28-af-d-is-on-nikon-fx.html</loc>
+<lastmod>2021-01-10T14:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/a-small-story-about-writing-my-phd-thesis.html</loc>
+<lastmod>2019-02-27T18:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/building-and-benchmarking-my-own-deep-learning-server.html</loc>
+<lastmod>2018-01-21T10:20:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/analysing-100gb-of-aerial-photos-to-identify-sea-lions-using-tensorflow-and-spark-on-aws.html</loc>
+<lastmod>2017-06-12T10:20:00+01:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/understanding-dfts-temporal-and-frequency-resolution.html</loc>
+<lastmod>2014-07-04T15:00:00+01:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/category/machine-learning.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/category/music.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/category/other.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/category/photography.html</loc>
+<lastmod>2021-01-30T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/guitar-amp.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/marshall.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/genealogy-tree.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/family-tree.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/marshall-history.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/orange-drop.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/paper-in-oil.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/polystyrene.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/polyester.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/ceramic.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/capacitors.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/rc-filter.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/low-pass.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/guitar-tone.html</loc>
+<lastmod>2022-02-06T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/photography.html</loc>
+<lastmod>2021-01-30T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/lens-test.html</loc>
+<lastmod>2021-01-10T14:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/phd.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/thesis.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/viva.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/latex.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/git.html</loc>
+<lastmod>2019-02-27T18:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/tensorflow.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/aws.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/cuda.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/convnets.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/convolutional-neural-networks.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/machine-learning.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/python.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/keras.html</loc>
+<lastmod>2018-01-21T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/spark.html</loc>
+<lastmod>2017-06-12T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/parallel-processing.html</loc>
+<lastmod>2017-06-12T10:20:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/fourier-transform.html</loc>
+<lastmod>2014-07-04T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/fft.html</loc>
+<lastmod>2014-07-04T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/dft.html</loc>
+<lastmod>2014-07-04T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/author/nicktgr15.html</loc>
+<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
 </urlset>
