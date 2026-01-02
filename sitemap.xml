@@ -5,58 +5,65 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://nicktgr15.github.io/</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/tags.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/categories.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/archives.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/sitemap.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/privacy_policy.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/pages/about.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>yearly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://nicktgr15.github.io/pages/contact.html</loc>
-<lastmod>2025-05-14T10:58:08-00:00</lastmod>
+<lastmod>2026-01-02T17:16:44-00:00</lastmod>
 <changefreq>yearly</changefreq>
 <priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tone-is-a-feeling-why-volume-and-playing-conditions-matter-more-than-we-admit.html</loc>
+<lastmod>2026-01-02T00:00:00+00:00</lastmod>
+<changefreq>weekly</changefreq>
+<priority>0.6</priority>
 </url>
 
 <url>
@@ -124,7 +131,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://nicktgr15.github.io/category/music.html</loc>
-<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -139,6 +146,41 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://nicktgr15.github.io/category/photography.html</loc>
 <lastmod>2021-01-30T15:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/guitar.html</loc>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/tone.html</loc>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/volume.html</loc>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/psychoacoustics.html</loc>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://nicktgr15.github.io/tag/amps.html</loc>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -383,7 +425,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://nicktgr15.github.io/author/nicktgr15.html</loc>
-<lastmod>2022-05-23T00:58:00-00:01</lastmod>
+<lastmod>2026-01-02T00:00:00-00:01</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

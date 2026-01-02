@@ -31,6 +31,19 @@
 
     gtag('config', 'UA-37767324-2');
 </script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        processEscapes: true
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7831522800967660"
             crossorigin="anonymous"></script>
 </head>
@@ -82,7 +95,7 @@ spaces where these techniques can be applied. As a big fan of cloud computing I 
 <code>p2.xlarge</code> spot instances to run my Deep Learning experiments. I automated almost everything using cloudformation and
 I could have my GPU/Compute instance up and running in a couple of minutes. More recently and as the cryptocurrency madness
 was taking off I realised that I had to increase my spot instance bidding price almost on a daily basis.</p>
-<p><img style="width:80%;margin:auto;display:block;" src="images/bitcoin-vs-aws.png"/></p>
+<p><img class="no-orient" style="width:80%;margin:auto;display:block;" src="images/bitcoin-vs-aws.png"/></p>
 <p>I checked the spot instance pricing charts on AWS and realised that there was huge fluctuation of the prices.
 I'm not sure it's definitely the case but there might be some correlation between the current value of Bitcoin
 and the AWS EC2 spot instance prices. I would expect Amazon to aim for a spot price that makes

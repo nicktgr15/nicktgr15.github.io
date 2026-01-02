@@ -6,7 +6,7 @@ spaces where these techniques can be applied. As a big fan of cloud computing I 
 &lt;code&gt;p2.xlarge&lt;/code&gt; spot instances to run my Deep Learning experiments. I automated almost everything using cloudformation and
 I could have my GPU/Compute instance up and running in a couple of minutes. More recently and as the cryptocurrency madness
 was taking off I realised that I had to increase my spot instance bidding price almost on a daily basis.&lt;/p&gt;
-&lt;p&gt;&lt;img style="width:80%;margin:auto;display:block;" src="images/bitcoin-vs-aws.png"/&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img class="no-orient" style="width:80%;margin:auto;display:block;" src="images/bitcoin-vs-aws.png"/&gt;&lt;/p&gt;
 &lt;p&gt;I checked the spot instance pricing charts on AWS and realised that there was huge fluctuation of the prices.
 I'm not sure it's definitely the case but there might be some correlation between the current value of Bitcoin
 and the AWS EC2 spot instance prices. I would expect Amazon to aim for a spot price that makes
